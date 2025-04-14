@@ -39,7 +39,7 @@ CREATE TABLE blogs
 
 -- All blogs
 
-SELECT B.id,B.title,C.id as category_id ,C.title,U.id as user_id,U.fullname,B.created_time 
+SELECT B.id,B.title,C.id as category_id ,C.title as category_title,U.id as user_id,U.fullname,B.created_time 
 FROM blogs B 
 inner join categories C ON 
 B.category_id = C.id 
@@ -48,10 +48,20 @@ B.user_id = U.id;
 
 -- My Blogs
 
-SELECT B.id,B.title,C.id as category_id ,C.title,U.id as user_id,U.fullname,B.created_time 
+SELECT B.id,B.title,C.id as category_id ,C.title as category_title ,U.id as user_id,U.fullname,B.created_time 
 FROM blogs B 
 inner join categories C ON 
 B.category_id = C.id 
 inner join user U ON  
 B.user_id = U.id
-WHERE B.user_id = ?;  
+WHERE B.user_id = 2;  
+
+
+
+
+-- Om Token
+-- eyJhbGciOiJIUzI1NiJ9.Mg.bLgSCHTtas-nhw1nYzLaaQa2BsIFkdIdpxPPHSdnqGk
+
+-- Mahesh Token
+-- eyJhbGciOiJIUzI1NiJ9.Mw.589T5W-i2G5zaPSnGZzDDswliIV8xvrVauiz-dEpz0Q
+

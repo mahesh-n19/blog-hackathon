@@ -4,6 +4,29 @@ const result = require('../utils/result')
 
 const router = express.Router();
 
+
+router.get('/search', (req,res)=>{
+
+    const {title} = req.body;
+
+
+    const sql = `SELECT * FROM blogs WHERE title LIKE '%${title}%'`;
+
+    pool.query(sql, (error,data)=>{
+
+        if(data)
+        {
+            res.send(result.successResult(data));
+        }
+        else 
+        {
+            res.send(result.errorResult(error));
+        }
+
+    })
+
+})
+
 router.get('/categories' , (req,res)=>{
 
     const sql = `SELECT * FROM categories`;
@@ -126,7 +149,7 @@ router.get('/:id', (req,res)=>{
 
     const blog_id = req.params.id;
 
-    const sql = `SELECT B.id,B.title,C.id as category_id ,C.title as category_title,U.id as user_id,U.fullname,B.created_time 
+    const sql = `SELECT B.id,B.title,B.contents,C.id as category_id ,C.title as category_title,U.id as user_id,U.fullname,B.created_time 
                     FROM blogs B 
                     inner join categories C ON 
                     B.category_id = C.id 
@@ -149,5 +172,79 @@ router.get('/:id', (req,res)=>{
     
 
 })
+
+
+router.delete('/:id',(req,res)=>{
+   
+    const blog_id = req.params.id;
+
+    const sql = `DELETE FROM blogs WHERE id = ?`;
+
+    pool.query(sql,[blog_id], (error,data)=>{
+
+        if(data)
+        {
+            res.send(result.successResult("Blog deleted successfully"));
+        }
+        else 
+        {
+            res.send(result.errorResult("Failed to delete Blog : "+error))
+        }
+
+    })
+
+})
+
+
+router.put('/:id', (req,res)=>{
+
+    const blog_id = req.params.id; 
+
+    const {title,contents, category_id} = req.body;
+
+    const sql = `UPDATE  blogs SET title = ? , contents = ? , category_id = ? WHERE id = ? `;
+
+    pool.query(sql, [title,contents,category_id,blog_id] , (error,data)=>{
+
+        if(data)
+        {
+            res.send(result.successResult("Blog updated successfully"));
+        }
+        else 
+        {
+            res.send(result.errorResult(error));
+        }
+
+    });
+
+})
+
+
+// router.get('/search' , (req,res)=>{
+    
+//     const title = req.body;
+//     console.log("title : "+title)
+
+//     const sql = `SELECT * FROM blogs where title LIKE %?%`;
+
+//     pool.query(sql,[title], (error,data)=>{
+
+
+//         if(data)
+//         {
+//             res.send(result.successResult(data));
+//         }
+//         else 
+//         {
+//             res.send(result.errorResult(error));
+//         }
+
+//     })
+
+
+// })
+
+
+
 
 module.exports = router;
