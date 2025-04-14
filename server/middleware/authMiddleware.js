@@ -6,7 +6,6 @@ function authMiddleWare(req,res,next)
 {
     if(req.url == '/user/login' || req.url == '/user/register')
     {
-        console.log("Middleware bypassed");
         next();
     }
     else 
@@ -19,7 +18,8 @@ function authMiddleWare(req,res,next)
                 {
                     const payload = jwt.verify(token,secret);
 
-                    req.headers.id = payload.id;
+
+                    req.headers.id = payload;
     
                     next();
                 }

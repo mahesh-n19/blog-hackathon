@@ -26,7 +26,7 @@ router.post('/login', (req,res)=>{
 
             if(data.length == 0)
             {
-                console.log("User not found");
+                
                 res.send(result.errorResult("User not found"));
             }
             else 
