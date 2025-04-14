@@ -1,1 +1,1 @@
-./server/nodemodules
+node_modules/
